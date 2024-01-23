@@ -66,7 +66,7 @@ class AddRoom extends StatelessWidget {
                     child: TextFormField(
                       controller: controller.room_name,
                       validator: (s) {
-                        return validate(s.toString(), 3, 12, "username");
+                        return validate(s.toString(), 3, 40, "roomname");
 
                         // print(s);
                         // return validate(s.toString(), 2, 15, "username");
@@ -90,7 +90,7 @@ class AddRoom extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 3.w),
                     child: TextFormField(
                       validator: (s) {
-                        return validate(s!, 2, 15, "username");
+                        return validate(s!, 5, 100, "roomdesc");
                       },
                       controller: controller.room_desc,
                       keyboardType: TextInputType.text,
@@ -167,18 +167,21 @@ class AddRoom extends StatelessWidget {
                                   controller.update();
                                 });
                               },
-                              child: Container(
-                                height: 20.h,
-                                width: 20.h,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Transform.scale(
-                                      scale: 1,
-                                      child: Image.file(
-                                        controller.roomlogo!,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )),
+                              child: UnconstrainedBox(
+                                child: Container(
+                                  // color: Colors.red,
+                                  height: 30.h,
+                                  width: 15.h,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Transform.scale(
+                                        scale: 1,
+                                        child: Image.file(
+                                          controller.roomlogo!,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )),
+                                ),
                               ),
                             );
                     })),
@@ -255,31 +258,6 @@ class AddRoom extends StatelessWidget {
                                             controller.update();
                                           }
                                         });
-
-                                        // double x = 1;
-                                        // showDialog(
-                                        //     context: context,
-                                        //     builder: (v) {
-                                        //       return Dialog(
-                                        //         backgroundColor: Colors.transparent,
-                                        //         child: Container(
-                                        //           width: 80.w,
-                                        //           height: 70.h,
-                                        //           decoration: BoxDecoration(
-                                        //               color: AppColors.black,
-                                        //               borderRadius:
-                                        //                   BorderRadius.circular(
-                                        //                       20)),
-                                        //           // color: AppColors.red,
-                                        //           child: Transform.scale(
-                                        //               scale: 1,
-                                        //               child: Image.file(
-                                        //                   fit: BoxFit.fill,
-                                        //                   controller
-                                        //                       .roomphotos[index])),
-                                        //         ),
-                                        //       );
-                                        //     });
                                       },
                                       child: Container(
                                           decoration: BoxDecoration(

@@ -196,7 +196,14 @@ class Roomgroupmeal extends StatelessWidget {
               padding: EdgeInsets.all(5.sp),
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.black)),
-              child: Center(child: Text("$groupname")),
+              child: Center(
+                  child: Text(
+                "$groupname",
+                style: TextStyle(
+                    color: controller.groups.length == 0
+                        ? Colors.red
+                        : Colors.black),
+              )),
             ),
           ),
           Container(
@@ -331,7 +338,10 @@ class Roomgroupmeal extends StatelessWidget {
                         child: Center(
                           child: Text(
                             "$mealplan",
-                            style: GoogleFonts.poppins(color: Colors.black),
+                            style: GoogleFonts.poppins(
+                                color: controller.mealplans.length == 0
+                                    ? Colors.red
+                                    : Colors.black),
                           ),
                         ),
                       ),

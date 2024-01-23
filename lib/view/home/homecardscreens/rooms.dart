@@ -160,7 +160,6 @@ class _RoomViewCardState extends State<RoomViewCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      // color: Colors.green,
                       margin: EdgeInsets.all(1.w),
                       width: 20.w,
                       height: 25.w,
@@ -168,15 +167,17 @@ class _RoomViewCardState extends State<RoomViewCard> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            height: 5.h,
-                            width: 5.h,
-                            child: CachedNetworkImage(
-                                width: 4.w,
-                                height: 4.w,
-                                fit: BoxFit.fill,
-                                imageUrl: ImageAssets.networkroomphotos +
-                                    "${widget.room.roomLogo}"),
+                          UnconstrainedBox(
+                            child: SizedBox(
+                              height: 7.h,
+                              width: 5.h,
+                              child: CachedNetworkImage(
+                                  width: 6.w,
+                                  height: 6.w,
+                                  fit: BoxFit.fill,
+                                  imageUrl: ImageAssets.networkroomphotos +
+                                      "${widget.room.roomLogo}"),
+                            ),
                           ),
                           SizedBox(
                             height: 2.w,

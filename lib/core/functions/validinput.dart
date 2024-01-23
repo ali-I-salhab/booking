@@ -1,6 +1,28 @@
 import 'package:get/get.dart';
 
 validate(String val, int min, int max, String type) {
+  if (type == 'roomname') {
+    if (val.isEmpty) {
+      return 'room name cant be empty';
+    }
+    if (val.length > max) {
+      return 'roomname length cant be bigger than $max';
+    }
+    if (val.length < min) {
+      return 'roomname length cant be less than $min';
+    }
+  }
+  if (type == 'roomdesc') {
+    if (val.isEmpty) {
+      return 'roomdesc cant be empty';
+    }
+    if (val.length > max) {
+      return 'roomdesc length cant be bigger than $max';
+    }
+    if (val.length < min) {
+      return 'roomdesc length cant be less than $min';
+    }
+  }
   if (type == 'password') {
     if (val.isEmpty) {
       return 'field cant be empty';

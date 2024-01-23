@@ -117,12 +117,16 @@ class RoomController extends GetxController {
       isfiltered = false;
       isfilteredobx.value = false;
       print("all");
-      for (int i = 0; i < groups.length; i++) {
-        for (int j = 0; j < mealplans.length; j++) {
+      for (int i = 0; i < (groups.length == 0 ? 1 : groups.length); i++) {
+        for (int j = 0;
+            j < (mealplans.length == 0 ? 1 : mealplans.length);
+            j++) {
           a.add(Roomgroupmeal(
               room: room,
-              groupname: groups[i],
-              mealplan: mealplans[j].mealplanName!.toString(),
+              groupname: groups.length == 0 ? "no groups found" : groups[i],
+              mealplan: mealplans.length == 0
+                  ? "no mealplan found"
+                  : mealplans[j].mealplanName!.toString(),
               refresh: fun));
         }
       }
