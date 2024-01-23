@@ -1,0 +1,206 @@
+name: booking
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.1.0 <4.0.0"
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  cached_network_image: ^3.3.0
+  connectivity_plus: ^5.0.2
+  convex_bottom_bar: ^3.2.0
+  country_flags: ^2.2.0
+  country_list_pick: ^1.0.1+6
+  country_list_picker: ^1.0.2
+  country_picker: ^2.0.21
+  cupertino_icons: ^1.0.2
+  dartz: ^0.10.1
+  dio: ^5.4.0
+  file_picker: ^5.3.3
+  firebase_core: ^2.14.0
+  firebase_messaging: ^14.6.4
+  flutter:
+    sdk: flutter
+  flutter_animate: ^4.2.0+1
+  flutter_launcher_icons: ^0.13.1
+  flutter_otp_text_field: ^1.1.1
+  flutter_paypal: ^0.2.0
+  flutter_rating_bar: ^4.0.1
+  flutter_speed_dial: ^7.0.0
+  flutter_svg: ^1.1.6
+  get: ^4.6.6
+  google_fonts: ^4.0.4
+  hero_animation: ^1.0.0+3
+  hive: ^2.2.3
+  http: ^0.13.5
+  icon_forest: ^1.1.8
+  iconify_flutter: ^0.0.5
+  image_cropper: ^4.0.1
+  image_editor: ^1.3.0
+  image_editor_plus: ^0.2.6
+  image_picker: ^1.0.2
+  intl_phone_field: ^3.2.0
+  ionicons: ^0.2.2
+  lottie: ^2.3.2
+  network_to_file_image: ^4.0.1
+  path_provider: ^2.1.0
+  rate_in_stars: ^0.0.3
+  shared_preferences: ^2.1.2
+  sizer: ^2.0.15
+  time_range_picker: ^2.2.0
+  url_launcher: ^6.1.12
+  yandex_mapkit: ^3.3.3
+  z_time_ago: ^0.1.2
+
+dev_dependencies:
+  flutter_native_splash: ^2.3.7
+
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter_native_splash:
+  color: "#42a5f5"
+  image: "assets/images/homescreen/logo.png" 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/homescreen/logo.png"   
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+# The following section is specific to Flutter packages.
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/password.svg
+    - assets/images/person.svg
+
+    - assets/images/phone.svg
+
+    - assets/images/email.svg
+
+
+    - assets/icons/egypt.png
+    - assets/icons/payment.png
+    - assets/icons/guest.jpg
+    - assets/icons/available.jpg
+    - assets/icons/photos.png
+    - assets/icons/plus.jpg
+    - assets/icons/users.jpg
+    - assets/icons/room1.jpg
+    - assets/icons/details.jpg
+    - assets/icons/rates.jpg
+    - assets/icons/arrowleft.png
+    - assets/icons/arrowright.png
+    - assets/icons/check.jpg
+    - assets/icons/logo.png
+    - assets/icons/rooms.jpg
+    - assets/lotties/loading.json
+    - assets/lotties/nodata.json
+    - assets/lotties/nointernet.json
+    - assets/lotties/notfound404.json
+    - assets/images/homescreen/available.png
+    - assets/images/homescreen/details.png
+    - assets/images/homescreen/group.png
+    - assets/images/homescreen/payment.png
+    - assets/images/homescreen/photos.png
+    - assets/images/homescreen/rates.png
+    - assets/images/homescreen/rooms.png
+    - assets/images/homescreen/users.png
+    - assets/images/homescreen/logo.png
+    - assets/images/homescreen/confirmedorders.png
+    - assets/images/homescreen/uprate.png
+
+    - assets/images/homescreen/downrate.png
+    - assets/images/homescreen/mealplan.png
+
+    - assets/images/homescreen/egypt.png
+
+    - assets/images/homescreen/kashier.png
+
+    - assets/images/homescreen/pendingorders.png
+
+    - assets/images/homescreen/notifications.png
+
+    - assets/images/homescreen/stopsale.png
+
+    - assets/images/homescreen/update.png
+
+    - assets/iccons/delete.png
+    - assets/iccons/flag.png
+    - assets/iccons/more.png
+    - assets/iccons/profile.png
+    - assets/iccons/edit.png
+    - assets/images/splash.png
+    - assets/images/onboarding1.png
+    - assets/images/onboarding2.png
+    - assets/images/onboarding3.png
+    - assets/icons/Hotel/AC.svg
+    - assets/icons/Hotel/ATM.svg
+    - assets/icons/Hotel/Bar.svg
+
+    - assets/icons/Hotel/Fitnesscentre.svg
+    - assets/icons/Hotel/Beachfront.svg
+    - assets/icons/Hotel/Parking.svg
+    - assets/icons/Hotel/Privatebeacharea.svg
+    - assets/icons/Hotel/Reciption.svg
+    - assets/icons/Hotel/Restaurants.svg
+    - assets/icons/Hotel/Spaandwellnesscentre.svg
+    - assets/icons/Hotel/Swimmingpools.svg
+
+    - assets/icons/Hotel/WaterPark.svg
+    - assets/icons/Hotel/Wifi.svg
+    - assets/icons/updaterate.png
+    - assets/icons/downrate.png
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: Kufi
+      fonts:
+        - asset: assets/fonts/NotoKufiArabic-VariableFont_wght.ttf
+        - asset: assets/fonts/static/NotoKufiArabic-ExtraBold.ttf
+          style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
