@@ -271,14 +271,14 @@ showaddmealplandialog(
       context: context,
       builder: (c) {
         return Material(
-            color: AppColors.black.withOpacity(0.03),
+            color: AppColors.black.withOpacity(0.1),
             child: UnconstrainedBox(
               child: Container(
                 decoration: BoxDecoration(
-                    color: AppColors.blue.withOpacity(0.9),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(8)),
                 padding: EdgeInsets.all(8.sp),
-                height: 50.h,
+                height: 30.h,
                 width: 67.w,
                 child: Column(children: [
                   Text(
@@ -297,9 +297,14 @@ showaddmealplandialog(
                               child: Container(
                                 height: 20.h,
                                 width: 10.w,
-                                color: AppColors.white,
+                                color: Colors.white,
                                 child: ListView(
                                   children: [
+                                    Row(
+                                      children: [
+                                        Text("Select Group"),
+                                      ],
+                                    ),
                                     ...List.generate(
                                       controller.alladdedrooms.length,
                                       (index) => ListTile(
@@ -313,7 +318,7 @@ showaddmealplandialog(
                                         },
                                         title: Text(controller
                                             .alladdedrooms[index]!.roomName!),
-                                        leading: Icon(Icons.donut_large),
+                                        leading: Icon(Icons.abc_outlined),
                                       ),
                                     )
                                   ],
@@ -353,62 +358,28 @@ showaddmealplandialog(
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate:
-                                      DateTime.now().add(Duration(days: 600)))
-                              .then((value) {
+                      InkWell(onTap: () {
+                        showDateRangePicker(
+                                context: context,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(2100))
+                            .then((value) {
+                          // print(value!.start);
+                          // print(value!.end);
+                          if (value != null) {
                             controller.startdate =
-                                value.toString().substring(0, 10);
-                            controller.update();
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [Text("from"), Icon(Icons.date_range)],
-                            ),
-                            GetBuilder<StopSaleController>(
-                                builder: (controller) {
-                              return controller.startdate == null
-                                  ? Text("non")
-                                  : Text(controller.startdate!);
-                            })
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate:
-                                      DateTime.now().add(Duration(days: 600)))
-                              .then((value) {
+                                value!.start.toString().substring(0, 10);
                             controller.enddate =
-                                value.toString().substring(0, 10);
+                                value!.end.toString().substring(0, 10);
                             controller.update();
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [Text("to"), Icon(Icons.date_range)],
-                            ),
-                            GetBuilder<StopSaleController>(
-                                builder: (controller) {
-                              return controller.enddate == null
-                                  ? Text("non")
-                                  : Text(controller.enddate!);
-                            })
-                          ],
-                        ),
-                      )
+                          }
+                        });
+                      }, child:
+                          GetBuilder<StopSaleController>(builder: (controller) {
+                        return controller.startdate == null
+                            ? (Text("select date"))
+                            : Text(controller.startdate!);
+                      })),
                     ],
                   ),
                   SizedBox(
@@ -420,8 +391,10 @@ showaddmealplandialog(
                       CustomGroupButton(
                           text: "Add",
                           ontap: () async {
-                            await controller.addstopsale(controller.roomid!,
-                                controller.startdate!, controller.enddate!);
+                            if (controller.startdate != null) {
+                              await controller.addstopsale(controller.roomid!,
+                                  controller.startdate!, controller.enddate!);
+                            } else {}
                           },
                           color: AppColors.green),
                       CustomGroupButton(

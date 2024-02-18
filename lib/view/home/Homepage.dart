@@ -32,29 +32,54 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.white,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         appBar: CustomAppBar(pagetitle: "Main"),
-        bottomNavigationBar: ConvexAppBar(
-          // cornerRadius: 20.sp,
+        bottomNavigationBar: GetBuilder<HomeController>(
+            builder: (controller) => BottomNavigationBar(
+                    currentIndex: controller.currentscreen,
+                    selectedItemColor: AppColors.bluetext,
+                    backgroundColor: AppColors.greysetting,
+                    onTap: (index) {
+                      controller.currentscreen = index;
+                      controller.update();
+                    },
+                    items: [
+                      BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.home_outlined,
+                            // color: AppColors.bluetext,
+                          ),
+                          label: "home"),
+                      BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.settings,
+                            // color: AppColors.bluetext,
+                          ),
+                          label: "setting")
+                    ]))
+        // bottomNavigationBar: ConvexAppBar(
+        //   // cornerRadius: 20.sp,
 
-          // gradient: LinearGradient(
-          //     colors: [Colors.black.withOpacity(0.12), Colors.black]),
-          activeColor: AppColors.blue,
+        //   // gradient: LinearGradient(
+        //   //     colors: [Colors.black.withOpacity(0.12), Colors.black]),
+        //   activeColor: AppColors.blue,
 
-          // style: TabStyle.fixed,
-          top: -20,
-          // height: 20,
-          onTap: (index) {
-            if (index == 1) {}
-            controller.currentscreen = index;
-            controller.update();
-          },
-          // backgroundColor: AppColors.blue,
-          backgroundColor: Colors.black12,
-          color: Colors.black.withOpacity(0.12),
-          items: [
-            TabItem(icon: Icons.home, title: 'Home'),
-            TabItem(icon: Icons.people, title: 'Settings'),
-          ],
-        ),
+        //   // style: TabStyle.fixed,
+        //   top: -20,
+        //   // height: 20,
+        //   onTap: (index) {
+        //     if (index == 1) {}
+        //     controller.currentscreen = index;
+        //     controller.update();
+        //   },
+        //   // backgroundColor: AppColors.blue,
+        //   backgroundColor: Colors.black12,
+        //   color: Colors.black.withOpacity(0.12),
+        //   items: [
+        //     TabItem(icon: Icons.home, title: 'Home'),
+        //     // TabItem(icon: Icons.people, title: 'Wallet'),
+        //     TabItem(icon: Icons.people, title: 'Settings'),
+        //   ],
+        // ),
+        ,
         body: GetBuilder<HomeController>(
             builder: (controller) =>
                 controller.Screens[controller.currentscreen]),

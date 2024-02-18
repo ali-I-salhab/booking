@@ -28,7 +28,7 @@ class CustomProfileCard extends StatelessWidget {
         Get.toNamed(AppRoutes.editProfile);
       },
       child: Container(
-        margin: EdgeInsets.all(5.sp),
+        margin: EdgeInsets.all(3.sp),
         child: Row(
           children: [
             CircleAvatar(

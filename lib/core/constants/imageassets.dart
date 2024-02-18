@@ -28,7 +28,7 @@ class ImageAssets {
   /// home logos
   static String available = 'assets/images/homescreen/available.png';
   static String details = 'assets/images/homescreen/details.png';
-  static String group = 'assets/images/homescreen/group.png';
+
   static String payment = 'assets/images/homescreen/payment.png';
   static String photos = 'assets/images/homescreen/photos.png';
   static String rates = 'assets/images/homescreen/rates.png';
@@ -94,9 +94,14 @@ class ImageAssets {
   static String person = 'assets/images/person.svg';
   static String phone = 'assets/images/phone.svg';
   static String email = 'assets/images/email.svg';
+  static String coupon = 'assets/coupon.png';
+  static String gmail = 'assets/gmail.png';
+  static String group = 'assets/group.png';
+  static String periods = 'assets/periods.png';
 
   // static String downrate = 'assets/icons/downrate.png';
 }
+
     // - assets/icons/Hotel/AC.svg
     // - assets/icons/Hotel/ATM.svg
     // - assets/icons/Hotel/Bar.svg

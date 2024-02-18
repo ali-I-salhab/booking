@@ -11,6 +11,7 @@ import 'package:booking/view/widgets/groups/customgroupbutton.dart';
 import 'package:booking/view/widgets/home/customappbar.dart';
 import 'package:booking/view/widgets/home/customprofilecard.dart';
 import 'package:booking/view/widgets/rooms/roomgroupmealplan.dart';
+import 'package:booking/view/widgets/showaddrateavailability.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
@@ -399,41 +400,137 @@ class _RoomViewCardState extends State<RateViewCard> {
                             RateGroupMealplanCard(
                               room: widget.room,
                             ),
-                            Obx(
-                              () => InkWell(
-                                onTap: () {
-                                  print("reset");
-                                  controller.isfiltered.value = false;
-                                  controller.appliedfilter.value = "";
-                                },
-                                child: controller.appliedfilter == ""
-                                    ? Container()
-                                    : Container(
-                                        padding: EdgeInsets.all(4.sp),
-                                        decoration: BoxDecoration(
-                                            color: AppColors.blue,
-                                            borderRadius:
-                                                BorderRadius.circular(12.sp)),
-                                        child: Text.rich(
-                                            TextSpan(children: <InlineSpan>[
-                                          TextSpan(
-                                            text:
-                                                controller.appliedfilter.value,
-                                            style: TextStyle(
-                                                fontSize: 16.sp,
-                                                color: Colors.white),
+                            ElevatedButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return Material(
+                                          child: Container(
+                                            height: 35.h,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Text("Select Mealplan"),
+                                                    SizedBox(
+                                                        height: 20.w,
+                                                        child: Obx(
+                                                          () => DropdownButton(
+                                                              value: controller
+                                                                          .filtermealplanname ==
+                                                                      ""
+                                                                  ? null
+                                                                  : controller
+                                                                      .filtermealplanname!
+                                                                      .value,
+                                                              items: controller
+                                                                  .mealplans
+                                                                  .map((e) => DropdownMenuItem(
+                                                                      value: e
+                                                                          .mealplanName,
+                                                                      child: Text(e
+                                                                          .mealplanName
+                                                                          .toString())))
+                                                                  .toList()
+                                                                ..add(
+                                                                    DropdownMenuItem(
+                                                                  child: Text(
+                                                                    "-",
+                                                                  ),
+                                                                  value: "",
+                                                                )),
+                                                              onChanged: (a) {
+                                                                print("object");
+                                                                print(a);
+                                                                controller
+                                                                        .filtermealplanname!
+                                                                        .value =
+                                                                    a.toString();
+                                                              }),
+                                                        ))
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Text("Select group"),
+                                                    SizedBox(
+                                                        height: 20.w,
+                                                        child: Obx(
+                                                          () => Material(
+                                                            child:
+                                                                DropdownButton(
+                                                                    value: controller.filtergroypname ==
+                                                                            ""
+                                                                        ? null
+                                                                        : controller
+                                                                            .filtergroypname!
+                                                                            .value,
+                                                                    items: controller
+                                                                        .groups
+                                                                        .map((e) => DropdownMenuItem(
+                                                                            value:
+                                                                                e,
+                                                                            child: Text(e
+                                                                                .toString())))
+                                                                        .toList()
+                                                                      ..add(
+                                                                          DropdownMenuItem(
+                                                                        child:
+                                                                            Text(
+                                                                          "-",
+                                                                        ),
+                                                                        value:
+                                                                            "",
+                                                                      )),
+                                                                    onChanged:
+                                                                        (a) {
+                                                                      print(a
+                                                                          .toString());
+                                                                      controller
+                                                                          .filtergroypname!
+                                                                          .value = a.toString();
+                                                                    }),
+                                                          ),
+                                                        ))
+                                                  ],
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    controller.isfiltered!
+                                                        .value = true;
+                                                    controller.isfiltered!
+                                                        .value = false;
+                                                    controller.isfiltered!
+                                                        .value = true;
+                                                    controller.filter(
+                                                        widget.room,
+                                                        group: controller
+                                                            .filtergroypname!
+                                                            .value
+                                                            .toString(),
+                                                        meal: controller
+                                                            .filtermealplanname!
+                                                            .value
+                                                            .toString());
+
+                                                    Get.back();
+                                                  },
+                                                  child: Text("Apply"),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                          TextSpan(
-                                            text:
-                                                " filter applied tab to reset",
-                                            style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: AppColors.grey),
-                                          )
-                                        ])),
-                                      ),
-                              ),
-                            ),
+                                        );
+                                      });
+                                },
+                                child: Text("Apply filter")),
                             SizedBox(
                               height: 1.h,
                             ),
@@ -609,40 +706,39 @@ class Rategroupmeal extends StatelessWidget {
       child: Column(
         children: [
           InkWell(
-              onTap: () {
-                controller.filter(room, group: groupname);
-                controller.isfiltered.value = false;
-                controller.isfiltered.value = true;
-                controller.appliedfilter.value = groupname;
-                print("filter by groupname");
-              },
-              child: Obx(
-                () => controller.appliedfilter.value == groupname
-                    ? Container(
-                        width: 50.w,
-                        margin: EdgeInsets.symmetric(vertical: 5.sp),
-                        padding: EdgeInsets.all(5.sp),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
-                        child: Center(
-                            child: Text(
-                          "$groupname",
-                          style: TextStyle(fontSize: 12.sp),
-                        )),
-                      )
-                    : Container(
-                        width: 50.w,
-                        margin: EdgeInsets.symmetric(vertical: 5.sp),
-                        padding: EdgeInsets.all(5.sp),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.red)),
-                        child: Center(
-                            child: Text(
-                          "$groupname",
-                          style: TextStyle(fontSize: 12.sp),
-                        )),
-                      ),
-              )),
+            onTap: () {
+              controller.filter(room, group: groupname);
+              controller.isfiltered.value = false;
+              controller.isfiltered.value = true;
+              controller.appliedfilter.value = groupname;
+              print("filter by groupname");
+            },
+            child: controller.appliedfilter.value == groupname
+                ? Container(
+                    width: 50.w,
+                    margin: EdgeInsets.symmetric(vertical: 5.sp),
+                    padding: EdgeInsets.all(5.sp),
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.black)),
+                    child: Center(
+                        child: Text(
+                      "$groupname",
+                      style: TextStyle(fontSize: 12.sp),
+                    )),
+                  )
+                : Container(
+                    width: 50.w,
+                    margin: EdgeInsets.symmetric(vertical: 5.sp),
+                    padding: EdgeInsets.all(5.sp),
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.red)),
+                    child: Center(
+                        child: Text(
+                      "$groupname",
+                      style: TextStyle(fontSize: 12.sp),
+                    )),
+                  ),
+          ),
           InkWell(
             onTap: () {
               controller.filter(room, meal: mealplan);
@@ -747,7 +843,12 @@ class Rategroupmeal extends StatelessWidget {
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.blue),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    // showaddrateavailabilitydialogue(
+                                    //     context, "Edit Rate", () {
+                                    //   Get.back();
+                                    // });
+                                  },
                                   child: FittedBox(child: Text("edit Rate")),
                                 ),
                               ],

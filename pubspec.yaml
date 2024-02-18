@@ -102,6 +102,10 @@ flutter:
   assets:
     - assets/images/password.svg
     - assets/images/person.svg
+    - assets/coupon.png
+    - assets/gmail.png
+    - assets/group.png
+    - assets/periods.png
 
     - assets/images/phone.svg
 

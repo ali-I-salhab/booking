@@ -8,66 +8,45 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
-class RoomGroupMealplanCard extends StatefulWidget {
+class RoomGroupMealplanCard extends StatelessWidget {
   final RoomModel room;
-  const RoomGroupMealplanCard({super.key, required this.room});
+  RoomGroupMealplanCard({super.key, required this.room});
 
-  @override
-  State<RoomGroupMealplanCard> createState() => _RoomGroupMealplanCardState();
-}
-
-class _RoomGroupMealplanCardState extends State<RoomGroupMealplanCard> {
   RoomController controller = Get.find();
-  refresh() {
-    print("apply parent refresh from child");
-    setState(() {});
-  }
-
-  ont() {
-    controller.babyshark = controller.getalloptions(
-      widget.room,
-      refresh,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    print('rebuildinhhhhhhhhhhhhhhhhhhh');
-    print(controller.filterresult);
-    if (controller.babyshark.isEmpty) {
-      ont();
-    }
     return Container(
         width: 90.w,
-        padding: EdgeInsets.only(bottom: 10.w),
-        // height: 50.h,
+        height: 44.h,
         child: Stack(
           children: [
             Positioned(
-              left: 15.w,
-              child: Container(
-                width: 80.w,
-                margin: EdgeInsets.only(right: 50.sp),
-                child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: GetBuilder<RoomController>(builder: (controller) {
-                      return Row(
-                        children: [
-                          if (controller.isfiltered) ...controller.filterresult,
-                          if (!controller.isfiltered) ...controller.babyshark
-                        ],
-                      );
-                    })),
-              ),
-            ),
+                left: 15.w,
+                child: Container(
+                    width: 80.w,
+                    margin: EdgeInsets.only(right: 50.sp),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      // child: Text("sdsd"),
+                      child: Obx(() {
+                        return (controller.isfiltered!.value == false)
+                            ? Row(
+                                children: controller.getalloptions(room),
+                              )
+                            : Row(
+                                children: controller.filterresult,
+                              );
+                      }),
+                    ))),
             Positioned(
               child: Container(
                 width: 15.w,
-                height: 49.h,
+                height: 40.h,
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 40.sp,
+                      height: 33.sp,
                     ),
                     PhysicalModel(
                       color: Colors.white,
@@ -159,18 +138,21 @@ class _RoomGroupMealplanCardState extends State<RoomGroupMealplanCard> {
 
 class Roomgroupmeal extends StatelessWidget {
   final String groupname;
+  final String groupid;
   final String mealplan;
+  final String mealplanid;
   List<String> Guests = [];
   List<String> Rooms = [];
   final RoomModel room;
-  final void Function() refresh;
 
-  Roomgroupmeal(
-      {super.key,
-      required this.groupname,
-      required this.mealplan,
-      required this.room,
-      required this.refresh});
+  Roomgroupmeal({
+    super.key,
+    required this.groupname,
+    required this.mealplan,
+    required this.room,
+    required this.groupid,
+    required this.mealplanid,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -180,31 +162,19 @@ class Roomgroupmeal extends StatelessWidget {
       padding: EdgeInsets.only(right: 20.sp),
       child: Column(
         children: [
-          InkWell(
-            onTap: () {
-              print("ffffffffffffffffff");
-
-              controller.filterresult =
-                  controller.getalloptions(room, refresh, groupname: groupname);
-              controller.filteringgroupname = groupname;
-              controller.filternametoobx.value = groupname;
-              refresh();
-            },
-            child: Container(
-              width: 50.w,
-              margin: EdgeInsets.symmetric(vertical: 5.sp),
-              padding: EdgeInsets.all(5.sp),
-              decoration:
-                  BoxDecoration(border: Border.all(color: Colors.black)),
-              child: Center(
-                  child: Text(
-                "$groupname",
-                style: TextStyle(
-                    color: controller.groups.length == 0
-                        ? Colors.red
-                        : Colors.black),
-              )),
-            ),
+          Container(
+            width: 50.w,
+            margin: EdgeInsets.symmetric(vertical: 5.sp),
+            padding: EdgeInsets.all(5.sp),
+            decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+            child: Center(
+                child: Text(
+              "$groupname",
+              style: TextStyle(
+                  color: controller.groups.length == 0
+                      ? Colors.red
+                      : Colors.black),
+            )),
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 5.sp),
@@ -354,7 +324,14 @@ class Roomgroupmeal extends StatelessWidget {
                         height: 3.5.h,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text("dasdsdsata")],
+                          children: [
+                            Text(controller.availabilitymap[(
+                              room.roomId,
+                              mealplanid,
+                              groupid,
+                            )]
+                                .toString())
+                          ],
                         ),
                       ),
                       Container(
@@ -367,7 +344,7 @@ class Roomgroupmeal extends StatelessWidget {
                         height: 3.5.h,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text("availabity")],
+                          children: [Text("12")],
                         ),
                       ),
                       Container(
@@ -390,11 +367,23 @@ class Roomgroupmeal extends StatelessWidget {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.blue),
                             onPressed: () {
+                              controller.availabilityval!.text =
+                                  controller.availabilitymap[(
+                                room.roomId,
+                                mealplanid,
+                                groupid,
+                              )];
                               showaddrateavailabilitydialogue(context, "add",
-                                  () {
+                                  () async {
+                                await controller.updateavailability(
+                                    groupid,
+                                    mealplanid,
+                                    controller.availabilityval!.text);
                                 print("editing complete");
+
+                                print(controller.availabilityval!.text);
                                 Get.back();
-                              });
+                              }, controller.availabilityval!);
                             },
                             child: Text("add Availabiltiy"),
                           ),

@@ -1,39 +1,28 @@
-import 'dart:ffi';
-import 'dart:io';
-import 'dart:math';
 import 'package:booking/addroom.dart';
 import 'package:booking/core/functions/animatedtransation.dart';
 import 'package:booking/core/functions/deletedailogue.dart';
-import 'package:booking/view/home/homecardscreens/rates.dart';
-import 'package:booking/view/home/homecardscreens/users.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+
 import 'package:flutter_svg/svg.dart';
-import 'package:booking/controller/home/groupcontroller.dart';
+
 import 'package:booking/controller/home/roomcontroller.dart';
 import 'package:booking/core/class/handlingdataview.dart';
 import 'package:booking/core/constants/colors.dart';
 import 'package:booking/core/constants/imageassets.dart';
-import 'package:booking/core/constants/route.dart';
-import 'package:booking/core/functions/showbottomsheet.dart';
-import 'package:booking/core/functions/uploadfile.dart';
+
 import 'package:booking/data/model/roommodel.dart';
-import 'package:booking/view/widgets/groups/customgroupbutton.dart';
+
 import 'package:booking/view/widgets/home/customappbar.dart';
 import 'package:booking/view/widgets/home/customprofilecard.dart';
-import 'package:booking/view/widgets/room/addroomcard.dart';
+
 import 'package:booking/view/widgets/rooms/addroomdialogue.dart';
 import 'package:booking/view/widgets/rooms/roomgroupmealplan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:icon_forest/flat_icons_medium.dart';
-import 'package:icon_forest/kicons_emoji.dart';
-import 'package:icon_forest/mbi_combi.dart';
-import 'package:ionicons/ionicons.dart';
+
 import 'package:sizer/sizer.dart';
-import 'package:icon_forest/icon_forest.dart';
 
 class Rooms extends StatelessWidget {
   const Rooms({super.key});
@@ -55,15 +44,103 @@ class Rooms extends StatelessWidget {
                   flag: ImageAssets.flag,
                   name: "ali salhab",
                   permition: "admin"),
-              Column(
+              Obx(
+                () => ElevatedButton(
+                    onPressed: !controller.isfiltered!.value
+                        ? () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Material(
+                                    child: Container(
+                                      height: 35.h,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text("Select group"),
+                                              SizedBox(
+                                                  height: 20.w,
+                                                  child: Obx(
+                                                    () => DropdownButton(
+                                                        underline: Container(),
+                                                        value: controller
+                                                                    .filterwith ==
+                                                                ""
+                                                            ? null
+                                                            : controller
+                                                                .filterwith!
+                                                                .value
+                                                                .toString(),
+                                                        items: controller.groups
+                                                            .map((e) =>
+                                                                DropdownMenuItem(
+                                                                    value: e,
+                                                                    child: Text(
+                                                                        e)))
+                                                            .toList(),
+                                                        onChanged: (a) {
+                                                          controller.filterwith!
+                                                                  .value =
+                                                              a.toString();
+                                                        }),
+                                                  ))
+                                            ],
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              controller.isfiltered!.value =
+                                                  true;
+                                              controller.isfiltered!.value =
+                                                  false;
+                                              controller.isfiltered!.value =
+                                                  true;
+
+                                              controller.fiterallrooms(
+                                                  controller.filterwith!.value
+                                                      .toLowerCase(),
+                                                  controller.alladdedrooms[0]);
+
+                                              Get.back();
+                                            },
+                                            child: Text("Apply"),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          }
+                        : () {
+                            controller.isfiltered!.value = false;
+                          },
+                    child: controller.isfiltered!.value
+                        ? Row(
+                            children: [
+                              Text(
+                                "${controller.filterwith}",
+                                style: TextStyle(
+                                    fontSize: 22.sp, color: Colors.red),
+                              ),
+                              Text("  filter applied Tab to reset")
+                            ],
+                          )
+                        : Text("Apply filter")),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       InkWell(
                           onTap: () async {
+                            controller.cleardata();
                             Navigator.of(context).push(createRoute(AddRoom()));
 
                             // Get.toNamed(AppRoutes.addroompage);
@@ -73,7 +150,7 @@ class Rooms extends StatelessWidget {
                       const Text("   Add Room")
                     ],
                   ),
-                  Row(
+                  Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -219,7 +296,6 @@ class _RoomViewCardState extends State<RoomViewCard> {
                                   showalertdeletedialogue(context, () async {
                                     await controller
                                         .deleteroom(widget.room.roomId!);
-                                    Get.back();
                                   });
                                 },
                                 child: Container(
@@ -316,36 +392,75 @@ class _RoomViewCardState extends State<RoomViewCard> {
                 child: status == true
                     ? Container(
                         child: Column(
-                          mainAxisSize: MainAxisSize.max,
                           children: [
                             RoomGroupMealplanCard(
                               room: widget.room,
                             ),
-                            Obx(() => controller.isfilteredobx.value
-                                ? InkWell(
-                                    onTap: () {
-                                      controller.getalloptions(
-                                          widget.room, () {});
-                                      controller.update();
-
-                                      controller.filteringgroupname = "";
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 3.w),
-                                      decoration: BoxDecoration(
-                                          color: AppColors.blue,
-                                          borderRadius:
-                                              BorderRadius.circular(2.w)),
-                                      child: Text(
-                                        " ${controller.filternametoobx} filter applied \n    tap to reset",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  )
-                                : Container()),
+                            Obx(
+                              () => ElevatedButton(
+                                  onPressed: !controller.isfiltered!.value
+                                      ? () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) {
+                                                return Material(
+                                                  child: Container(
+                                                    height: 35.h,
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            Text(
+                                                                "Select group"),
+                                                            SizedBox(
+                                                                height: 20.w,
+                                                                child: Obx(
+                                                                  () => DropdownButton(
+                                                                      underline: Container(),
+                                                                      value: controller.filterwith == "" ? null : controller.filterwith!.value.toString(),
+                                                                      items: controller.groups.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                                                                      onChanged: (a) {
+                                                                        controller
+                                                                            .filterwith!
+                                                                            .value = a.toString();
+                                                                      }),
+                                                                ))
+                                                          ],
+                                                        ),
+                                                        ElevatedButton(
+                                                          onPressed: () {},
+                                                          child: Text("Apply"),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                        }
+                                      : () {
+                                          controller.isfiltered!.value = false;
+                                        },
+                                  child: controller.isfiltered!.value
+                                      ? Row(
+                                          children: [
+                                            Text(
+                                              "${controller.filterwith}",
+                                              style: TextStyle(
+                                                  fontSize: 22.sp,
+                                                  color: Colors.red),
+                                            ),
+                                            Text(
+                                                "  filter applied Tab to reset")
+                                          ],
+                                        )
+                                      : Text("Apply filter")),
+                            ),
                             InkWell(
                               child: const Text(
-                                "Show less >>",
+                                "Show less ",
                                 style: TextStyle(color: AppColors.blue),
                               ),
                               onTap: () {

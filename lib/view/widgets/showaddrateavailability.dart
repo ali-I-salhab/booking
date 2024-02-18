@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-showaddrateavailabilitydialogue(context, String title, VoidCallback ontap) {
+showaddrateavailabilitydialogue(context, String title, VoidCallback ontap,
+    TextEditingController editontroller) {
   return Get.dialog(UnconstrainedBox(
     child: Padding(
       padding:
@@ -34,6 +35,7 @@ showaddrateavailabilitydialogue(context, String title, VoidCallback ontap) {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: editontroller,
                     onEditingComplete: ontap,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),

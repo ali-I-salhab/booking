@@ -3,6 +3,7 @@ import 'package:booking/core/class/handlingdataview.dart';
 import 'package:booking/core/constants/colors.dart';
 import 'package:booking/core/constants/imageassets.dart';
 import 'package:booking/core/functions/checkinternetconnection.dart';
+import 'package:booking/core/functions/deletedailogue.dart';
 import 'package:booking/core/services/services.dart';
 import 'package:booking/view/widgets/auth/authtextformfield.dart';
 import 'package:booking/view/widgets/groups/addedgroup.dart';
@@ -31,86 +32,90 @@ class Groups extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomAppBar(pagetitle: "Groups"),
-        body: Obx(() => controller.enabled.value == true
-            ? Container(
-                child: ListView(
+        body: ListView(
+          children: [
+            CustomProfileCard(
+                image: ImageAssets.profile,
+                flag: ImageAssets.flag,
+                name: ser.shared.getString("email").toString(),
+                permition: "admin"),
+            InkWell(
+              onTap: () {
+                showaddgroupdialogue(context);
+                controller.addGroupSelectedCountrie = [];
+                controller.groupname!.text = "";
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // CountryListPicker(),
+                    Row(
+                      children: [
+                        Image.asset(
+                          ImageAssets.more,
+                          width: 30.sp,
+                          height: 30.sp,
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Text("New Guest Group"),
+                      ],
+                    ),
                     Container(
                       // color: AppColors.blue,
                       child: Row(
                         children: [
-                          Switch(
-                              value: controller.enabled.value,
-                              onChanged: (v) {
-                                controller.enabled.value = v!;
-                              }),
                           controller.enabled.value
                               ? Text("groups enabled ")
-                              : Text("groups disaplled")
+                              : Text("groups disaplled"),
+                          Obx(
+                            () => Switch(
+                                value: controller.enabled.value,
+                                onChanged: (v) {
+                                  controller.enabled.value = v!;
+                                }),
+                          )
                         ],
                       ),
                     ),
-                    CustomProfileCard(
-                        image: ImageAssets.profile,
-                        flag: ImageAssets.flag,
-                        name: ser.shared.getString("email").toString(),
-                        permition: "admin"),
-                    InkWell(
-                      onTap: () {
-                        showaddgroupdialogue(context);
-                        controller.addGroupSelectedCountrie = [];
-                        controller.groupname!.text = "";
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 5.w, vertical: 1.h),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              ImageAssets.more,
-                              width: 30.sp,
-                              height: 30.sp,
-                            ),
-                            SizedBox(
-                              width: 5.w,
-                            ),
-                            Text("New Guest Group"),
-                          ],
-                        ),
-                      ),
-                    ),
-                    AddedGroups(),
+                  ],
+                ),
+              ),
+            ),
+            Obx(() => controller.enabled.value == true
+                ? Container(
+                    child: Column(
+                      children: [
+                        // CountryListPicker(),
 
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 12.sp),
-                      decoration: BoxDecoration(
-                          color: AppColors.blue,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Text(
-                        "Added guest group",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                            fontSize: 24, color: Colors.white),
-                      ),
+                        AddedGroups(),
+
+                        // Container(
+                        //   margin: EdgeInsets.symmetric(horizontal: 12.sp),
+                        //   decoration: BoxDecoration(
+                        //       color: AppColors.blue,
+                        //       borderRadius: BorderRadius.circular(12)),
+                        //   child: Text(
+                        //     "Added guest group",
+                        //     textAlign: TextAlign.center,
+                        //     style: GoogleFonts.poppins(
+                        //         fontSize: 24, color: Colors.white),
+                        //   ),
+                        // ),
+                        // AddedGroupsview(),
+                      ],
                     ),
-                    AddedGroupsview(),
-                  ],
-                ),
-              )
-            : Container(
-                color: AppColors.red,
-                child: Row(
-                  children: [
-                    Switch(
-                        value: controller.enabled.value,
-                        onChanged: (v) {
-                          controller.enabled.value = v!;
-                        }),
-                    Text("Groups disabled")
-                  ],
-                ),
-              )));
+                  )
+                : Center(
+                    child: Text(
+                      "groups  Dispabled",
+                      style: TextStyle(color: AppColors.red),
+                    ),
+                  )),
+          ],
+        ));
   }
 }
 
@@ -126,62 +131,24 @@ class _AddedGroupsState extends State<AddedGroups> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: GetBuilder<GroupController>(builder: (controller) {
-        return Handlingdataview(
-            statusrequest: controller.uploadgroupsstatusrequest,
-            widget: ListView.builder(
-                shrinkWrap: true,
-                // physics: NeverScrollableScrollPhysics(),
-                itemCount: controller.alladdedgroups.length,
-                itemBuilder: ((context, index) {
-                  return ListTile(
-                    leading:
-                        Text(controller.alladdedgroups[index].name.toString()),
-                    trailing: Checkbox(
-                        value: controller.alladdedgroups[index].selected,
-                        onChanged: (val) async {
-                          setState(() {
-                            controller.alladdedgroups[index].selected = val!;
-                          });
-                          await controller.updategroupstatus(
-                              controller.alladdedgroups[index].id.toString(),
-                              val!);
-                        }),
-                  );
-                })));
-      }),
-    );
-  }
-}
-
-class AddedGroupsview extends StatefulWidget {
-  const AddedGroupsview({super.key});
-
-  @override
-  State<AddedGroupsview> createState() => _AddedGroupsviewState();
-}
-
-class _AddedGroupsviewState extends State<AddedGroupsview> {
-  GroupController controller = Get.find();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GetBuilder<GroupController>(builder: (controller) {
-        return Handlingdataview(
-            statusrequest: controller.uploadgroupsstatusrequest,
-            widget: SizedBox(
-              height: 30.h,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 2.h),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    // physics: NeverScrollableScrollPhysics(),
-                    itemCount: controller.alladdedgroups.length,
-                    itemBuilder: ((context, index) {
-                      return ListTile(
+    return Container(
+      child: SizedBox(
+        child: GetBuilder<GroupController>(builder: (controller) {
+          return Handlingdataview(
+              statusrequest: controller.uploadgroupsstatusrequest,
+              widget: ListView.builder(
+                  shrinkWrap: true,
+                  // physics: NeverScrollableScrollPhysics(),
+                  itemCount: controller.alladdedgroups.length,
+                  itemBuilder: ((context, index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 10.sp, vertical: 2.sp),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.sp),
+                        color: AppColors.greycard,
+                      ),
+                      child: ListTile(
                         leading: Text(
                             controller.alladdedgroups[index].name.toString()),
                         trailing: Row(
@@ -228,32 +195,51 @@ class _AddedGroupsviewState extends State<AddedGroupsview> {
                                 ),
                               ),
                               onTap: () async {
-                                String id = controller.alladdedgroups[index].id;
-                                setState(() {
-                                  controller.alladdedgroups.removeAt(index);
+                                showalertdeletedialogue(context, () async {
+                                  String id =
+                                      controller.alladdedgroups[index].id;
 
-                                  controller.update();
+                                  if (!await checkinternetstatus()) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title:
+                                                Text("no internet connection"),
+                                          );
+                                        });
+                                  } else {
+                                    await controller.deletegroup(id);
+                                    Get.back();
+                                  }
+                                  setState(() {
+                                    controller.alladdedgroups.removeAt(index);
+
+                                    controller.update();
+                                  });
                                 });
-                                if (!await checkinternetstatus()) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text("no internet connection"),
-                                        );
-                                      });
-                                } else {
-                                  await controller.deletegroup(id);
-                                }
                               },
                             ),
+                            Checkbox(
+                                value:
+                                    controller.alladdedgroups[index].selected,
+                                onChanged: (val) async {
+                                  setState(() {
+                                    controller.alladdedgroups[index].selected =
+                                        val!;
+                                  });
+                                  await controller.updategroupstatus(
+                                      controller.alladdedgroups[index].id
+                                          .toString(),
+                                      val!);
+                                }),
                           ],
                         ),
-                      );
-                    })),
-              ),
-            ));
-      }),
+                      ),
+                    );
+                  })));
+        }),
+      ),
     );
   }
 }
@@ -321,6 +307,7 @@ showaddgroupdialogue(context, [String id = ""]) {
                     ),
                     GetBuilder<GroupController>(builder: (controller) {
                       return Container(
+                        constraints: BoxConstraints(maxHeight: 20.h),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
@@ -330,26 +317,42 @@ showaddgroupdialogue(context, [String id = ""]) {
                                   blurRadius: 2)
                             ]),
                         child: SizedBox(
-                          height: 25.h,
-                          child: Wrap(
-                            children: [
-                              ...List.generate(
-                                  controller.addGroupSelectedCountrie.length,
-                                  (index) => FittedBox(
-                                        child: Chip(
-                                          avatar: Icon(Icons.remove),
-                                          label: FittedBox(
-                                            child: Text(
-                                              controller
-                                                      .addGroupSelectedCountrie[
-                                                  index],
-                                              style: TextStyle(fontSize: 12.sp),
+                          child: SingleChildScrollView(
+                            controller: controller.sc,
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                ...List.generate(
+                                    controller.addGroupSelectedCountrie.length,
+                                    (index) => InkWell(
+                                          onTap: () {
+                                            print("object");
+                                            controller.addGroupSelectedCountrie
+                                                .removeWhere((element) =>
+                                                    element ==
+                                                    controller
+                                                            .addGroupSelectedCountrie[
+                                                        index]);
+                                            controller.update();
+                                          },
+                                          child: FittedBox(
+                                            child: Chip(
+                                              avatar: Icon(Icons.remove),
+                                              label: FittedBox(
+                                                child: Text(
+                                                  controller
+                                                          .addGroupSelectedCountrie[
+                                                      index],
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ))
-                            ],
-                          ).animate().flip(duration: Duration(seconds: 1)),
+                                        ))
+                              ],
+                            ).animate().flip(duration: Duration(seconds: 1)),
+                          ),
                         ),
                       );
                     }),
@@ -359,7 +362,6 @@ showaddgroupdialogue(context, [String id = ""]) {
                     ),
                     GetBuilder<GroupController>(builder: (controller) {
                       return SizedBox(
-                        height: 40.h,
                         width: 70.w,
                         child: Countrycard(),
                       );
@@ -464,7 +466,6 @@ class _CountrycardState extends State<Countrycard> {
   List<String> search(String query) {
     List<String> result = [];
 
-    print("Query");
     for (int i = 0; i < countries.length; i++) {
       if (countries[i].name.contains(RegExp(query, caseSensitive: false))) {
         result.add(countries[i].name);
@@ -475,6 +476,7 @@ class _CountrycardState extends State<Countrycard> {
 
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 12.sp),
       child: Column(
         children: [
           Row(
@@ -499,12 +501,12 @@ class _CountrycardState extends State<Countrycard> {
             ],
           ),
           Container(
-              height: 20.h,
+              height: 40.h,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     ...List.generate(
-                        result.length,
+                        result.length == 0 ? countries.length : result.length,
                         (index) => Container(
                               margin: EdgeInsets.all(5.sp),
                               padding: EdgeInsets.all(10.sp),
@@ -518,21 +520,40 @@ class _CountrycardState extends State<Countrycard> {
                                   Container(
                                       height: 12.sp,
                                       child: FittedBox(
-                                          child: Text(result[index]))),
+                                          child: Text(result.length == 0
+                                              ? countries[index].name.toString()
+                                              : result[index]))),
                                   Checkbox(
                                       value: controller.addGroupSelectedCountrie
-                                              .contains(result[index])
+                                              .contains(result.length == 0
+                                                  ? countries[index]
+                                                      .name
+                                                      .toString()
+                                                  : result[index])
                                           ? true
                                           : false,
                                       onChanged: (s) async {
-                                        s == true
-                                            ? controller
-                                                .addGroupSelectedCountrie
-                                                .add(result[index])
-                                            : controller
-                                                .addGroupSelectedCountrie
-                                                .removeWhere((element) =>
-                                                    element == result[index]);
+                                        print("object");
+                                        print(controller
+                                            .sc.position.maxScrollExtent);
+                                        if (s == true) {
+                                          controller.addGroupSelectedCountrie
+                                              .add(result.length == 0
+                                                  ? countries[index]
+                                                      .name
+                                                      .toString()
+                                                  : result[index]);
+                                          controller.sc.jumpTo(controller
+                                              .sc.position.maxScrollExtent);
+                                        } else
+                                          controller.addGroupSelectedCountrie
+                                              .removeWhere((element) =>
+                                                  element ==
+                                                  (result.length == 0
+                                                      ? countries[index]
+                                                          .name
+                                                          .toString()
+                                                      : result[index]));
                                         print("------------------------");
                                         print(controller
                                             .addGroupSelectedCountrie);

@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 class GroupController extends GetxController {
   TextEditingController? groupname;
+  ScrollController sc = ScrollController();
   RxBool enabled = true.obs;
   HotelModel? hotel;
   List handleddata = [];

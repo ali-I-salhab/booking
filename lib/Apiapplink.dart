@@ -47,6 +47,10 @@ class ApiApplinks {
   static const String roomview = server + "rooms/view.php";
   static const String getgroupsfromrooms = server + "rooms/groupsnames.php";
   static const String getroomimages = server + "rooms/getroomimages.php";
+  static const String deleteroomimage = server + "rooms/deleteroomphoto.php";
+  static const String getavailability = server + "rooms/getavailability.php";
+  static const String updateavailability =
+      server + "rooms/updateavailability.php";
 
   // -----------mealplans
 

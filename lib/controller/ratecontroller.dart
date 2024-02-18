@@ -21,6 +21,8 @@ class Ratecontroller extends GetxController {
   RxDouble scale = 1.0.obs;
   RxBool showmore = false.obs;
   bool isdepartment = false;
+  RxString? filtermealplanname = "".obs;
+  RxString? filtergroypname = "".obs;
 
   HotelModel? hotel;
   MealplanData mealplandata = MealplanData(Get.find());
@@ -81,6 +83,7 @@ class Ratecontroller extends GetxController {
   }
 
   filter(RoomModel room, {String group = "", String meal = ""}) {
+    print("filter bY $meal $group ");
     List<Widget> a = [];
     for (int i = 0; i < groups.length; i++) {
       if (group != "" && groups[i] != group) continue;

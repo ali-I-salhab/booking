@@ -5,7 +5,11 @@ class AppColors {
   static const Color black = Color(0xff1a1616);
   static const Color white = Color(0xffE8bcb9);
   static const Color greytextformfield = Color(0xffEFF2F5);
+  static const Color greycard = Color.fromARGB(240, 206, 204, 204);
   static const Color scafold = Color(0xffF5F5F5);
+  static const Color bluetext = Color(0xff142968);
+
+  static const Color greysetting = Color(0xffF8F9FD);
 
   static const Color primarycolor = Color(0xff6216FC);
   static const Color secondarycolor = Color(0xff1d1a39);

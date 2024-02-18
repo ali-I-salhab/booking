@@ -11,7 +11,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 PreferredSizeWidget CustomAppBar({String? pagetitle = ""}) {
   HomeController controller = Get.find();
   return PreferredSize(
-      preferredSize: Size.fromHeight(17.h), // Set this height
+      preferredSize: Size.fromHeight(8.h), // Set this height
       child: Container(
         color: Colors.black.withOpacity(0.12),
         height: 20.h,
@@ -22,7 +22,7 @@ PreferredSizeWidget CustomAppBar({String? pagetitle = ""}) {
           children: [
             Positioned(
               left: 10.sp,
-              top: 30.sp,
+              top: 20.sp,
               child: InkWell(
                 onTap: () {
                   Get.back();
@@ -39,58 +39,55 @@ PreferredSizeWidget CustomAppBar({String? pagetitle = ""}) {
             ),
             Positioned(
                 right: 10.sp,
-                top: 18.sp,
+                top: 15.sp,
                 // alignment: Alignment.centerRight,
-                child: SizedBox(
-                  height: 40.sp,
-                  width: 40.sp,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50.sp),
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: ImageAssets.networkhotellogo +
-                          controller.hotel!.hotelLogo.toString(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 30.sp,
+                      width: 30.sp,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50.sp),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: ImageAssets.networkhotellogo +
+                              controller.hotel!.hotelLogo.toString(),
+                        ),
+                      ),
                     ),
-                  ),
+                    Container(
+                        // color: Colors.red,
+                        // width: 60.sp,
+                        height: 10.sp,
+                        child: FittedBox(
+                            child:
+                                Text(controller.hotel!.hotelName!.toString())))
+                  ],
                 )), // This Icon
             // Spacer(
             //   flex: 2,
             // ),
             Positioned(
               top: 10.sp,
-              left: 35.w,
-              child: ClipRRect(
-                child: Image.asset(
-                  ImageAssets.homelogo,
+              left: 42.w,
+              child: SizedBox(
+                height: 30.sp,
+                width: 50.sp,
+                child: ClipRRect(
+                  child: Image.asset(
+                    ImageAssets.homelogo,
 
-                  fit: BoxFit.cover,
-                  // fit: BoxFit.fill,
+                    fit: BoxFit.cover,
+                    // fit: BoxFit.fill,
+                  ),
                 ),
               ),
             ),
-            Positioned(
-              bottom: 0,
-              child: SizedBox(
-                child: Text(
-                  controller.hotel!.hotelName.toString(),
-                )
-                    .animate(
-                        autoPlay: true,
-                        onComplete: (a) {
-                          a.repeat();
-                        })
-                    .moveX(
-                        duration: Duration(
-                          seconds: 9,
-                        ),
-                        begin: -30.w,
-                        end: 100.w),
-              ),
-            ),
 
             Positioned(
-              top: 60.sp,
-              left: 30.w,
+              top: 40.sp,
+              left: 40.w,
               child: PhysicalModel(
                 borderRadius: BorderRadius.circular(20.sp),
                 color: Colors.white,
@@ -99,8 +96,8 @@ PreferredSizeWidget CustomAppBar({String? pagetitle = ""}) {
                 child: SizedBox(
                     child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                  width: 40.w,
-                  height: 10.w,
+                  width: 20.w,
+                  height: 4.5.w,
                   decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(20.sp)),

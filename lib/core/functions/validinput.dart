@@ -80,6 +80,17 @@ validate(String val, int min, int max, String type) {
       return 'invalid username ';
     }
   }
+  if (type == 'name') {
+    if (val.isEmpty) {
+      return 'field cant be empty';
+    }
+    if (val.length > max) {
+      return 'value length cant be bigger than $max';
+    }
+    if (val.length < min) {
+      return 'value length cant be less than $min';
+    }
+  }
   if (type == 'email') {
     if (val.isEmpty) {
       return 'field cant be empty';

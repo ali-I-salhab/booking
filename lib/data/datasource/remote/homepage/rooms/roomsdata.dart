@@ -8,6 +8,28 @@ import 'package:intl_phone_field/countries.dart';
 class RoomsData {
   Crud crud;
   RoomsData(this.crud);
+  getavailability(String hotelid) async {
+    var response =
+        await crud.postdata(ApiApplinks.getavailability, {"hotelid": hotelid});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+//   $hotelid=filterrequest("hotelid");
+// $group=filterrequest("group");
+// $meal=filterrequest("meal");
+// $value=filterrequest("value");
+  updateavailability(
+      String group, String meal, String value, String hotelid) async {
+    var response = await crud.postdata(ApiApplinks.updateavailability, {
+      "hotelid": hotelid,
+      "group": group,
+      "meal": meal,
+      "value": value,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 
   uploadphotos(String roomid, File image) async {
     var response = await crud.addRequestWithImageOne(
@@ -19,6 +41,13 @@ class RoomsData {
   getroomimages(String roomid) async {
     var response =
         await crud.postdata(ApiApplinks.getroomimages, {"roomid": roomid});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  deleteroomimage(String roomid, String imagename) async {
+    var response = await crud.postdata(ApiApplinks.deleteroomimage,
+        {"roomid": roomid, "imagename": imagename});
 
     return response.fold((l) => l, (r) => r);
   }
@@ -110,14 +139,61 @@ $room_availbility=filterRequest('room_availbility'); */
     return response.fold((l) => l, (r) => r);
   }
 
-  roomsedit(String roomid) async {
-    var response = await crud.postdata(ApiApplinks.roomedit, {
-      "roomid": roomid,
-    });
+  roomsupdate(
+      String room_name,
+      String room_hotelid,
+      String room_desc_ar,
+      String room_desc_en,
+      String room_extralargbed,
+      String room_sofabed,
+      String room_bunkbed,
+      String room_singlebed,
+      String room_adult,
+      String room_childrenundersix,
+      String room_childrenundertwelf,
+      String room_infant,
+      String room_bedonly,
+      String room_halfboard,
+      String room_bedbrekfast,
+      String room_allinclusive,
+      String room_rate,
+      String room_availbility,
+      String iconcode,
+      String roomid,
+      String oldimagename,
+      File logo) async {
+    var response = await crud.addRequestWithImageOne(
+        ApiApplinks.roomedit,
+        {
+          "roomid": roomid,
+          "oldimagename": oldimagename,
+          "room_name": room_name,
+          "room_hotelid": room_hotelid,
+          "room_desc_ar": room_desc_ar,
+          "room_desc_en": room_desc_en,
+          "room_extralargbed": room_extralargbed,
+          "room_sofabed": room_sofabed,
+          "room_bunkbed": room_bunkbed,
+          "room_singlebed": room_singlebed,
+          "room_adult": room_adult,
+          "room_childrenundersix": room_childrenundersix,
+          "room_childrenundertwelf": room_childrenundertwelf,
+          "room_infant": room_infant,
+          "room_bedonly": room_bedonly,
+          "room_halfboard": room_halfboard,
+          "room_bedbrekfast": room_bedbrekfast,
+          "room_allinclusive": room_allinclusive,
+          "room_rate": room_rate,
+          "room_availbility": room_availbility,
+          "room_icons": iconcode
+        },
+        logo);
 
     // print(response);
     return response.fold((l) => l, (r) => r);
   }
+
+  // print(response);
 
   roomsdelete(String roomid) async {
     var response = await crud.postdata(ApiApplinks.roomdelete, {
